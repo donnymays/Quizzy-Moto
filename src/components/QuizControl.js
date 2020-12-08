@@ -18,10 +18,17 @@ class QuizControl extends React.Component {
   //   };
   // }
 
+
   handleClick = () => {
-    const {dispatch} = this.props
-    if (this.props.selectedQuiz != null) {
-      const action = a.deselectedQuiz
+    if (this.props.editFormVisibleOnPage) {
+      const {dispatch} = this.props
+      const action = a.toggleEditForm();
+      dispatch(action)
+      const action2 = a.deselectedQuiz();
+      dispatch(action2);
+    } if (this.props.selectedQuiz != null) {
+      const {dispatch} = this.props
+      const action = a.deselectedQuiz();
       dispatch(action);
     } else {
       const { dispatch } = this.props;
@@ -54,22 +61,23 @@ class QuizControl extends React.Component {
   handleEditClick = () => {
     const { dispatch } = this.props;
     const action = a.toggleEditForm();
-    console.log('wutwut')
-    console.log(this.props.editFormVisibleFormOnPage)
     dispatch(action);
   }
 
-  handleEditingQuizInList = (quizToEdit) => {
+  handleEditingQuizInList = () => {
     const {dispatch} = this.props;
-    const action = a.deselectedQuiz;
-    console.log('huhuh')
+    const action = a.deselectedQuiz();
     dispatch(action)
+    const action2 = a.toggleEditForm();
+    dispatch(action2)
     
   }
 
   handleDeletingQuiz = (id) => {
     this.props.firestore.delete({collection: 'quizes', doc: id});
-    this.setState({selectedQuiz: null});
+    const {dispatch} = this.props;
+    const action = a.deselectedQuiz();
+    dispatch(action);
   }
 
   render () {
@@ -93,7 +101,7 @@ class QuizControl extends React.Component {
       let buttonText = null;
       if (this.props.editFormVisibleOnPage) {
         currentlyVisibleState = <EditQuizForm
-        selectedQuiz = {this.props.selectedQuiz}
+        quiz = {this.props.selectedQuiz}
         onEditQuiz = {this.handleEditingQuizInList} />
         buttonText = 'Return Home'
       } else if (this.props.selectedQuiz != null) {

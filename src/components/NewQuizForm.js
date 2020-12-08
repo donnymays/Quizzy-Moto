@@ -27,7 +27,7 @@ function NewQuizForm(props){
     <React.Fragment>
       <ReusableForm 
         formSubmissionHandler={addQuizToFirestore}
-        buttonText="Help!" />
+        buttonText="Create This Quiz!" />
     </React.Fragment>
   );
 }
