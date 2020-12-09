@@ -17,6 +17,7 @@ function Quiz(props){
 }
 
 Quiz.propTypes = {
+  userId: PropTypes.string,
   title: PropTypes.string,
   q1: PropTypes.string,
   q2: PropTypes.string,

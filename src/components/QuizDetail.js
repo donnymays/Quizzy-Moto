@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 function QuizDetail(props){
   const { quiz, onClickingDelete } = props;
-  
+  console.log(quiz)
   return (
     
     <React.Fragment>
@@ -12,6 +12,7 @@ function QuizDetail(props){
       <p><em>{quiz.q1}</em></p>
       <p><em>{quiz.q2}</em></p>
       <p><em>{quiz.q3}</em></p>
+      <button onClick={ props.onClickingRespond }>Respond To Quiz</button>
       <button onClick={ props.onClickingEdit }>Update Quiz</button>
       <button onClick={()=> onClickingDelete(quiz.id) }>Close quiz</button>
       <hr/>
@@ -22,7 +23,8 @@ function QuizDetail(props){
 QuizDetail.propTypes = {
   quiz: PropTypes.object,
   onClickingDelete: PropTypes.func,
-  onClickingEdit: PropTypes.func
+  onClickingEdit: PropTypes.func,
+  onClickingRespond: PropTypes.func
 };
 
 export default QuizDetail;

@@ -6,14 +6,17 @@ import { useFirestore } from 'react-redux-firebase'
 function NewQuizForm(props){
 
   const firestore = useFirestore();
-
+  const {uid} = props
   function addQuizToFirestore(event) {
     event.preventDefault();
 
     props.onNewQuizCreation();
 
+    console.log(firestore)
+
     return firestore.collection('quizes').add(
       {
+        uid: uid,
         title: event.target.title.value,
         q1: event.target.q1.value, 
         q2: event.target.q2.value,
