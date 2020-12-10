@@ -22,13 +22,12 @@ function QuizList(props){
   console.log(props)
   
   if (isLoaded(quizes)) { 
-    let myQuizes = quizes.filter(q => q.uid === uid)
     
     return (
       <React.Fragment>
-        <h1>Your Quizzes</h1>
+        <h1>Everyone's Quizzes</h1> 
         <hr/>
-          {myQuizes.map((quiz) => {   
+          {quizes.map((quiz) => {   
             return <Quiz
             whenQuizClicked = { props.onQuizSelection }
             title={quiz.title}

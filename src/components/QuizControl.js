@@ -21,13 +21,17 @@ class QuizControl extends React.Component {
 
 
   handleClick = () => {
-    if (this.props.editFormVisibleOnPage) {
+    if (this.props.response) {
+      const {dispatch} = this.props
+      const action = a.toggleResponse();
+      dispatch(action)
+    } else if (this.props.editFormVisibleOnPage) {
       const {dispatch} = this.props
       const action = a.toggleEditForm();
       dispatch(action)
       const action2 = a.deselectedQuiz();
       dispatch(action2);
-    } if (this.props.selectedQuiz != null) {
+    } else if (this.props.selectedQuiz != null) {
       const {dispatch} = this.props
       const action = a.deselectedQuiz();
       dispatch(action);
@@ -85,7 +89,6 @@ class QuizControl extends React.Component {
     const {dispatch} = this.props
     const action = a.toggleResponse();
     dispatch(action);
-    console.log(this.props)
   }
 
   handleSubmitResponse = () => {
@@ -93,7 +96,7 @@ class QuizControl extends React.Component {
     const action = a.toggleResponse();
     dispatch(action);
   }
-  // handle
+  
 
   render () {
     const auth = this.props.firebase.auth();
@@ -115,6 +118,7 @@ class QuizControl extends React.Component {
       
       let currentlyVisibleState = null;
       let buttonText = null;
+      console.log(this.props)
       if (this.props.response) {
         currentlyVisibleState = <Response
         quiz = {this.props.selectedQuiz}
@@ -139,6 +143,7 @@ class QuizControl extends React.Component {
         buttonText = "Return Home";
       } else {    
         currentlyVisibleState = <QuizList
+        uid = {auth.currentUser.uid}
         quizList = {this.props.masterQuizList}
         onQuizSelection={this.handleChangingSelectedQuiz} />;
         buttonText = "Add Quiz";

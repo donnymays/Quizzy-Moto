@@ -8,7 +8,6 @@ export const toggleNewForm = () => ({
   type: a.TOGGLE_NEW_FORM
 });
 
-
 export const selectedQuiz = (quiz) => {
   return {
     type: a.SELECTED_QUIZ,

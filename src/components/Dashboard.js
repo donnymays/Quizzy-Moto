@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import Quiz from "./Quiz";
 import { useSelector } from 'react-redux'
-import { useFirebase, useFirestore, withFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
-import firebase from 'firebase/app'
+import { useFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+// import Row from "react-bootstrap/row";
+// import Col from "react-bootstrap/col";
 
-function QuizList(props){
-  const { uid } = props;
+function Dashboard(props){
+  // const uid = this.props.firebase.auth().currentUser.uid
 
   useFirestoreConnect([
     { collection: 'quizes' }
@@ -16,17 +17,16 @@ function QuizList(props){
     { collection: 'responses' }
   ]);
 
-  const quizes = useSelector(state => state.firestore.ordered.quizes);
-
+  const firestore = useFirestrore();
+  const myQuizes = firebase.firestore().collection('quizes').where('uid', '=', firebase.auth().currentUser.uid).get()
+  // const myQuizes = useSelector(state => state.firestore.ordered.quizes).where(uid === quizes.);
   const responses = useSelector(state => state.firestore.ordered.responses);
-  console.log(props)
-  
-  if (isLoaded(quizes)) { 
-    let myQuizes = quizes.filter(q => q.uid === uid)
-    
+
+ 
+  console.log('userquizzes:' + myQuizes);
+  if (isLoaded(myQuizes)) { 
     return (
       <React.Fragment>
-        <h1>Your Quizzes</h1>
         <hr/>
           {myQuizes.map((quiz) => {   
             return <Quiz
@@ -53,8 +53,8 @@ function QuizList(props){
   }
 }
 
-QuizList.propTypes = {
+Dashboard.propTypes = {
   onQuizSelection: PropTypes.func
 };
 
-export default QuizList;
+export default Dashboard;

@@ -13,11 +13,6 @@ function Response(props){
     props.onSubmitResponse();
 
     return firestore.collection('responses').add(
-
-
-    // createReview => (review, tId) {
-    //   firestore.collection("reviews").add({trailId: tid, content: "Amazing trail!" })
-    // }
       {
         quizId: quiz.id,
         a1: event.target.a1.value, 
@@ -27,9 +22,6 @@ function Response(props){
       }
     );
   }
-  // createReview => (review, tId) {
-  //   firestore.collection("reviews").add({trailId: tid, content: "Amazing trail!" })
-  // }
 
   return (
     <React.Fragment>
