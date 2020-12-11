@@ -22,3 +22,7 @@ export const deselectedQuiz = () => ({
 export const toggleResponse = () => ({
   type: a.TOGGLE_RESPONSE
 });
+
+export const toggleQuizLists = () => ({
+  type: a.TOGGLE_QUIZ_LISTS
+})

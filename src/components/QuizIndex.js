@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { useFirebase, useFirestore, withFirestore, useFirestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import firebase from 'firebase/app'
 
-function QuizList(props){
+function QuizIndex(props){
   const { uid } = props;
 
   useFirestoreConnect([
@@ -36,11 +36,9 @@ function QuizList(props){
             q3={quiz.q3}
             id={quiz.id}
             key={quiz.id}
-            />
-            
-            
+            />         
           })}
-          
+          <button onClick={props.handleQuizToggle}>TOGGLE ME HARD!</button>
       </React.Fragment>
     );
   } else {
@@ -52,8 +50,8 @@ function QuizList(props){
   }
 }
 
-QuizList.propTypes = {
+QuizIndex.propTypes = {
   onQuizSelection: PropTypes.func
 };
 
-export default QuizList;
+export default QuizIndex;

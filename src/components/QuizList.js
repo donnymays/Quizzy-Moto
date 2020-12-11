@@ -37,11 +37,9 @@ function QuizList(props){
             q3={quiz.q3}
             id={quiz.id}
             key={quiz.id}
-            />
-            
-            
+            />          
           })}
-          
+          <button onClick={props.handleQuizToggle}>TOGGLE ME HARDER!</button>
       </React.Fragment>
     );
   } else {

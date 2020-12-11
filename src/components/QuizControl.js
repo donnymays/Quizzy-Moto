@@ -4,10 +4,12 @@ import QuizList from './QuizList';
 import QuizDetail from './QuizDetail';
 import Response from './Response';
 import EditQuizForm from './EditQuizForm';
+import QuizIndex from './QuizIndex';
 import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import * as a from './../actions';
 import { withFirestore, isLoaded } from 'react-redux-firebase';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 class QuizControl extends React.Component {
 
@@ -97,8 +99,15 @@ class QuizControl extends React.Component {
     dispatch(action);
   }
   
+  handleQuizToggle = () => {
+    const {dispatch} = this.props;
+    const action = a.toggleQuizLists();
+    dispatch(action);
+  }
+  
 
   render () {
+    console.log(this.props)
     const auth = this.props.firebase.auth();
     if (!isLoaded(auth)) {
       return (
@@ -109,13 +118,13 @@ class QuizControl extends React.Component {
     }
     if ((isLoaded(auth)) && (auth.currentUser == null)) {
       return (
-        <React.Fragment>
+        <Route>
           <h1>You must be signed in to access the queue.</h1>
-        </React.Fragment>
+          <Redirect to="/signin" />
+        </Route>
       )
     } 
     if ((isLoaded(auth)) && (auth.currentUser != null)) {
-      
       let currentlyVisibleState = null;
       let buttonText = null;
       console.log(this.props)
@@ -142,17 +151,31 @@ class QuizControl extends React.Component {
         onNewQuizCreation = {this.handleAddingNewQuizToList} />
         buttonText = "Return Home";
       } else {    
-        currentlyVisibleState = <QuizList
-        uid = {auth.currentUser.uid}
-        quizList = {this.props.masterQuizList}
-        onQuizSelection={this.handleChangingSelectedQuiz} />;
+        if (this.props.index) {
+          currentlyVisibleState = <QuizIndex
+          handleQuizToggle = {this.handleQuizToggle}
+          quizList = {this.props.masterQuizList}
+          onQuizSelection={this.handleChangingSelectedQuiz} />
+        } else {
+          currentlyVisibleState = <QuizList
+          handleQuizToggle = {this.handleQuizToggle}
+          uid = {auth.currentUser.uid}
+          quizList = {this.props.masterQuizList}
+          onQuizSelection={this.handleChangingSelectedQuiz} />;
+        }
         buttonText = "Add Quiz";
       }
+  
       return (
         <React.Fragment>
           {currentlyVisibleState}
           <button onClick={this.handleClick}>{buttonText}</button>
+          <Route>
+            <Redirect to="/" />
+          </Route>
         </React.Fragment>
+
+        
       );
     }  
   }
@@ -163,7 +186,8 @@ QuizControl.propTypes = {
   editFormVisibleOnPage: PropTypes.bool,
   newFormVisibleOnPage: PropTypes.bool, 
   selectedQuiz: PropTypes.object,
-  response: PropTypes.bool
+  response: PropTypes.bool,
+  index: PropTypes.bool,
 };
 
 const mapStateToProps = state => {
@@ -172,7 +196,8 @@ const mapStateToProps = state => {
     newFormVisibleOnPage: state.newFormVisibleOnPage,
     editFormVisibleOnPage: state.editFormVisibleOnPage,
     selectedQuiz: state.selectedQuiz,
-    response: state.response
+    response: state.response,
+    index: state.index
   }
 }
 
